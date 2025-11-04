@@ -5,10 +5,5 @@ export default defineNuxtConfig({
   css: ["./app/assets/css/main.css"],
   devtools: { enabled: true },
   modules: ["@nuxt/eslint"],
-  eslint: {
-    config: {
-      stylistic: true,
-    },
-  },
   vite: { plugins: [tailwindcss()] },
 });
