@@ -1,39 +1,24 @@
 <script setup lang="ts">
 import type { dataProdottoTypes } from "~~/shared/types/types";
-import { gsap } from "gsap";
-import { onMounted } from "vue";
 
 const route = useRoute();
 const {
   data: product,
   pending,
   error,
-} = useFetch<dataProdottoTypes>(`/api/prodottiITA/${route.params.prodotto}`);
-
-onMounted(() => {
-  const tl = gsap.timeline({
-    repeatDelay: 1,
-  });
-
-  tl.to(".prodotto", {
-    y: 50,
-    borderRadius: "100%",
-    stagger: 0.1,
-  });
-});
+} = useFetch<dataProdottoTypes>(`/api/prodottiEN/${route.params.prodotto}`);
+console.log(product);
 </script>
 
 <template>
-  <section aria-label="prodotto" class="prodotto min-h-screen mx-4">
+  <section aria-label="prodotto" class="min-h-screen mx-4">
     <div v-if="pending">Caricamento prodotto...</div>
     <div v-else-if="error">Errore nel caricamento del prodotto</div>
     <div v-else>
       <h1 class="text-2xl font-bold mb-4 text-center">{{ product?.name }}</h1>
       <p class="text-center">{{ product?.longDescription }}</p>
 
-      <div
-        class="flex flex-col gap-4 items-start my-8 mx-auto w-full sm:w-1/2 border p-4"
-      >
+      <div class="flex flex-col items-start my-8 mx-auto w-1/2 border p-4">
         <ProdottoRating :rating="product?.rating" titolo="Rating" />
         <ProdottoRecensioni
           :recensioni="product?.reviews"
@@ -62,12 +47,9 @@ onMounted(() => {
         />
       </div>
 
-      <button
-        @click="useRouter().back()"
-        class="text-blue-600 mt-6 inline-block"
-      >
+      <NuxtLink to="/" class="text-blue-600 mt-8">
         ← Torna ai prodotti
-      </button>
+      </NuxtLink>
     </div>
   </section>
 </template>

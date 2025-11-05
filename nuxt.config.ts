@@ -6,4 +6,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/eslint"],
   vite: { plugins: [tailwindcss()] },
+  app: {
+    head: {
+      title: "Palazzina creativa Brief",
+      meta: [{ name: "description", content: "Speriamo mi prendano" }],
+      htmlAttrs: {
+        lang: "it",
+      },
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    },
+  },
 });
