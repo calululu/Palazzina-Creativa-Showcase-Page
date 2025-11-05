@@ -61,7 +61,7 @@ onUpdated(() => {
         />
       </div>
 
-      <ProdottoBottone to="/es">Torna ai prodotti</ProdottoBottone>
+      <ProdottoBottone to="/">Torna ai prodotti</ProdottoBottone>
     </div>
   </section>
 </template>
