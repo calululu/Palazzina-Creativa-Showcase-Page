@@ -9,18 +9,11 @@ const {
 </script>
 
 <template>
-  <h1 class="text-amber-600 text-center mb-10 text-2xl font-extrabold">
+  <h1 class="text-amber-600 text-center mb-10 font-extrabold">
     PAGINA PRODOTTI
   </h1>
 
-  <div
-    v-if="status === 'pending'"
-    class="text-amber-600 font-bold text-center"
-    aria-live="polite"
-  >
-    Caricamento prodotti...
-  </div>
-
+  <Loader v-if="status === 'pending'">Caricamento . . .</Loader>
   <div v-else-if="error">Error: {{ error.message }}</div>
   <section
     v-else

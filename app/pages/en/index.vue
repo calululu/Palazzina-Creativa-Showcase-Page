@@ -21,18 +21,9 @@ const {
 </script>
 
 <template>
-  <h1 class="text-amber-600 text-center mb-10 text-2xl font-extrabold">
-    PRODUCT PAGE
-  </h1>
+  <h1 class="text-amber-600 text-center mb-10 font-extrabold">PRODUCT PAGE</h1>
 
-  <div
-    v-if="status === 'pending'"
-    class="text-amber-600 font-bold text-center"
-    aria-live="polite"
-  >
-    Loading page...
-  </div>
-
+  <Loader v-if="status === 'pending'">Loading . . .</Loader>
   <div v-else-if="error">Error: {{ error.message }}</div>
   <section
     v-else

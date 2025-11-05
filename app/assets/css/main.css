@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./prodotto.css" layer(components); /*prodotto */
 
 @layer components {
   /* Normalizazione personale */
@@ -9,7 +10,11 @@
   body {
     font-family: system-ui;
     -webkit-text-size-adjust: 100%;
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    margin: 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
   }
   button {
     cursor: pointer;
@@ -26,6 +31,4 @@
 }
 
 @theme {
-  /* --color-green-600: #004818; */
-  /* --font-klavika-l: klavika-l, sans-serif; */
 }

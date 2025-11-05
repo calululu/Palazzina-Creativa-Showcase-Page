@@ -1,55 +1,69 @@
 <script setup lang="ts">
+import useAnimProdotto from "~/utils/anim/useAnimProdotto";
 import type { dataProdottoTypes } from "~~/shared/types/types";
 
 const route = useRoute();
 const {
   data: product,
-  pending,
+  status,
   error,
 } = useFetch<dataProdottoTypes>(`/api/prodottiES/${route.params.prodotto}`);
-console.log(product);
+
+//SEO
+useHead({
+  htmlAttrs: {
+    lang: "es",
+  },
+});
+useSeoMeta({
+  description: `Página producto ${product?.value?.name}`,
+});
+
+//Animazione GSAP
+onUpdated(() => {
+  useAnimProdotto();
+});
 </script>
 
 <template>
-  <section aria-label="prodotto" class="min-h-screen mx-4">
-    <div v-if="pending">Caricamento prodotto...</div>
-    <div v-else-if="error">Errore nel caricamento del prodotto</div>
+  <section aria-label="prodotto" class="prodotto">
+    <Loader v-if="status === 'pending'">Cargando . . .</Loader>
+    <div v-else-if="error">Error al cargar el producto</div>
     <div v-else>
-      <h1 class="text-2xl font-bold mb-4 text-center">{{ product?.name }}</h1>
-      <p class="text-center">{{ product?.longDescription }}</p>
+      <h1 class="prodotto__titolo">
+        {{ product?.name }}
+      </h1>
+      <p class="prodotto__descrizione">
+        {{ product?.longDescription }}
+      </p>
 
-      <div class="flex flex-col items-start my-8 mx-auto w-1/2 border p-4">
-        <ProdottoRating :rating="product?.rating" titolo="Rating" />
-        <ProdottoRecensioni
-          :recensioni="product?.reviews"
-          titolo="Recensioni"
-        />
+      <div class="prodotto__info">
+        <ProdottoRating :rating="product?.rating" titolo="Evaluación" />
+        <ProdottoRecensioni :recensioni="product?.reviews" titolo="Reseñas" />
 
         <ProdottoDisponibilità
           :disponibilità="product?.availability"
-          titolo="Disponibilità"
+          titolo="Disponibilidad"
         />
 
         <ProdottoDimensioni
           :dimensioni="product?.dimensions"
-          titolo="Dimensioni"
+          titolo="Dimensiones"
         />
-        <ProdottoColori :colori="product?.colors" titolo="Colori" />
+        <ProdottoColori :colori="product?.colors" titolo="Bandera" />
       </div>
 
-      <div class="flex gap-4 items-center justify-center flex-wrap">
+      <div class="prodotto__immagini">
         <img
           v-for="gallery in product?.gallery"
           :src="gallery"
           :alt="product?.name"
-          class="object-cover max-w-96 max-h-96"
+          class="object-cover"
           loading="lazy"
         />
       </div>
 
-      <NuxtLink to="/" class="text-blue-600 mt-6 inline-block">
-        ← Torna ai prodotti
-      </NuxtLink>
+      <ProdottoBottone to="/es">Volver a productos</ProdottoBottone>
     </div>
   </section>
 </template>

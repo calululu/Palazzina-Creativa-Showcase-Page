@@ -1,9 +1,8 @@
 <script setup>
 const selectedLanguage = ref("/");
-const router = useRouter();
 
 const handleLanguageChange = () => {
-  router.push(selectedLanguage.value); //router.push permette di navigare sulla route che si vuole
+  navigateTo(selectedLanguage.value);
 };
 </script>
 

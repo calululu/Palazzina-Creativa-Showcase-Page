@@ -1,39 +1,38 @@
 <script setup lang="ts">
 import type { dataProdottoTypes } from "~~/shared/types/types";
-import { gsap } from "gsap";
-import { onMounted } from "vue";
+import useAnimProdotto from "~/utils/anim/useAnimProdotto";
 
 const route = useRoute();
 const {
   data: product,
-  pending,
+  status,
   error,
 } = useFetch<dataProdottoTypes>(`/api/prodottiITA/${route.params.prodotto}`);
 
-onMounted(() => {
-  const tl = gsap.timeline({
-    repeatDelay: 1,
-  });
+//SEO
+useSeoMeta({
+  description: `Pagina prodotto ${product?.value?.name}`,
+});
 
-  tl.to(".prodotto", {
-    y: 50,
-    borderRadius: "100%",
-    stagger: 0.1,
-  });
+//Animazione GSAP
+onUpdated(() => {
+  useAnimProdotto();
 });
 </script>
 
 <template>
-  <section aria-label="prodotto" class="prodotto min-h-screen mx-4">
-    <div v-if="pending">Caricamento prodotto...</div>
+  <section aria-label="prodotto" class="prodotto">
+    <Loader v-if="status === 'pending'">Caricamento . . .</Loader>
     <div v-else-if="error">Errore nel caricamento del prodotto</div>
     <div v-else>
-      <h1 class="text-2xl font-bold mb-4 text-center">{{ product?.name }}</h1>
-      <p class="text-center">{{ product?.longDescription }}</p>
+      <h1 class="prodotto__titolo">
+        {{ product?.name }}
+      </h1>
+      <p class="prodotto__descrizione">
+        {{ product?.longDescription }}
+      </p>
 
-      <div
-        class="flex flex-col gap-4 items-start my-8 mx-auto w-full sm:w-1/2 border p-4"
-      >
+      <div class="prodotto__info">
         <ProdottoRating :rating="product?.rating" titolo="Rating" />
         <ProdottoRecensioni
           :recensioni="product?.reviews"
@@ -52,22 +51,17 @@ onMounted(() => {
         <ProdottoColori :colori="product?.colors" titolo="Colori" />
       </div>
 
-      <div class="flex gap-4 items-center justify-center flex-wrap">
+      <div class="prodotto__immagini">
         <img
           v-for="gallery in product?.gallery"
           :src="gallery"
           :alt="product?.name"
-          class="object-cover max-w-96 max-h-96"
+          class="object-cover"
           loading="lazy"
         />
       </div>
 
-      <button
-        @click="useRouter().back()"
-        class="text-blue-600 mt-6 inline-block"
-      >
-        ← Torna ai prodotti
-      </button>
+      <ProdottoBottone to="/es">Torna ai prodotti</ProdottoBottone>
     </div>
   </section>
 </template>
